@@ -1,0 +1,141 @@
+<div class="page registration-container">
+  <header class="page-header">
+    <div class="page-heading">
+      <p class="page-eyebrow">Administration</p>
+      <h1 class="page-title">Register User</h1>
+      <p class="page-subtitle">Create platform credentials for customer users</p>
+    </div>
+  </header>
+
+  <div class="registration-flash-stack" *ngIf="successMessage() || errorMessage()">
+    <div *ngIf="successMessage()" class="alert alert-success" role="status" aria-live="polite">
+      <i class="fas fa-check-circle"></i>
+      <span>{{ successMessage() }}</span>
+    </div>
+
+    <div *ngIf="errorMessage()" class="alert alert-error" role="alert" aria-live="assertive">
+      <i class="fas fa-exclamation-circle"></i>
+      <span>{{ errorMessage() }}</span>
+    </div>
+  </div>
+
+  <div class="page-split">
+    <section class="panel registration-card">
+      <header class="panel-header">
+        <div>
+          <h2 class="panel-title">New user details</h2>
+          <p class="panel-subtitle">Add a new user to the system.</p>
+        </div>
+      </header>
+
+      <!-- Credentials for a new user: stop the browser filling in the admin's own saved login -->
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="panel-body form" autocomplete="off">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            id="username"
+            type="text"
+            name="new-username"
+            autocomplete="off"
+            formControlName="username"
+            [class.is-invalid]="isInvalid('username')"
+            placeholder="Enter username"
+            class="form-input"
+          />
+          <span *ngIf="showError('username', 'required')" class="error">
+            Username is required
+          </span>
+          <span *ngIf="showError('username', 'minlength')" class="error">
+            Username must be at least 3 characters
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="password-input">
+            <input
+              id="password"
+              [type]="showPassword() ? 'text' : 'password'"
+              name="new-password"
+              autocomplete="new-password"
+              formControlName="password"
+              [class.is-invalid]="isInvalid('password')"
+              placeholder="Enter password - at least 12 characters"
+              class="form-input"
+            />
+            <button
+              type="button"
+              (click)="togglePassword()"
+              class="toggle-password"
+              title="Toggle password visibility"
+            >
+              <i [class]="showPassword() ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+            </button>
+          </div>
+          <span *ngIf="showError('password', 'required')" class="error">
+            Password is required
+          </span>
+          <span *ngIf="showError('password', 'minlength')" class="error">
+            Password must be at least 12 characters
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="accountId">Account ID</label>
+          <input
+            id="accountId"
+            type="number"
+            formControlName="accountId"
+              [class.is-invalid]="isInvalid('accountId')"
+            placeholder="Enter account ID"
+            class="form-input"
+          />
+          <span *ngIf="showError('accountId', 'required')" class="error">
+            Account ID is required
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label id="role-label">Role</label>
+          <div class="role-card" aria-labelledby="role-label" data-testid="registered-role">
+            <span class="role-icon"><i class="fas fa-user"></i></span>
+            <span class="checkbox-text"><strong>Customer</strong><small>Trading access to their own account</small></span>
+            <span class="pill pill-info no-dot">Fixed</span>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" [disabled]="loading()" class="btn btn-primary">
+            <span *ngIf="!loading()">Register User</span>
+            <span *ngIf="loading()"><i class="fas fa-spinner fa-spin"></i> Registering...</span>
+          </button>
+          <button type="reset" class="btn btn-secondary">Clear</button>
+        </div>
+      </form>
+    </section>
+
+    <aside class="panel guidance-card" aria-label="Registration guidance">
+      <header class="panel-header">
+        <h2 class="panel-title">Before you register</h2>
+      </header>
+      <ul class="panel-body guidance-list">
+        <li>
+          <span class="guidance-icon"><i class="fas fa-user"></i></span>
+          <div><strong>Username</strong><p>At least 3 characters. Used to sign in.</p></div>
+        </li>
+        <li>
+          <span class="guidance-icon"><i class="fas fa-key"></i></span>
+          <div><strong>Password</strong><p>12 characters or more. Share it with the user over a secure channel.</p></div>
+        </li>
+        <li>
+          <span class="guidance-icon"><i class="fas fa-building-columns"></i></span>
+          <div><strong>Account ID</strong><p>The trading account the user will act on.</p></div>
+        </li>
+        <li>
+          <span class="guidance-icon"><i class="fas fa-shield-halved"></i></span>
+          <div><strong>Role</strong><p>Users created here are always Customers. Admin accounts cannot be created from this page.</p></div>
+        </li>
+      </ul>
+    </aside>
+  </div>
+</div>

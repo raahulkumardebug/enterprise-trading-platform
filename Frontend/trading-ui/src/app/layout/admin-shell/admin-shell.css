@@ -1,0 +1,22 @@
+/* Admin shell mirrors the customer shell so both areas feel like one product */
+.layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: transparent;
+  overflow: hidden;
+}
+
+.layout-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.layout-content {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  background: transparent;
+}

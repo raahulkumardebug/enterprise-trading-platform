@@ -1,0 +1,69 @@
+/* Transaction history — page, panel, table and filter styles come from the global design system */
+
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.type-select {
+  width: 168px;
+}
+
+.id-search-input {
+  width: 240px;
+}
+
+.table-wrapper {
+  max-height: min(66vh, 800px);
+}
+
+.transactions-table {
+  min-width: 900px;
+}
+
+.transactions-table col.col-type { width: 22%; }
+.transactions-table col.col-amount { width: 15%; }
+.transactions-table col.col-action { width: 16%; }
+.transactions-table col.col-datetime { width: 22%; }
+.transactions-table col.col-id { width: 25%; }
+
+/* Separate the right-aligned amount from the text column that follows */
+.transactions-table th.col-action,
+.transactions-table .cell-action {
+  padding-left: 32px;
+}
+
+.type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.type-icon {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: var(--brand-soft);
+  color: var(--brand);
+  font-size: 13px;
+}
+
+.type-label {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 768px) {
+  .type-select,
+  .id-search-input {
+    width: 100%;
+  }
+}

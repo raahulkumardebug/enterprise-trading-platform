@@ -1,0 +1,128 @@
+/* Holdings overview shown inside the dashboard "Portfolio holdings" panel:
+   one compact row per holding, its share of units drawn as a small bar */
+
+:host {
+  display: block;
+  min-height: 0;
+}
+
+.holdings-state {
+  margin: 0;
+  padding: 12px 0;
+  font-size: 13px;
+  color: var(--ink-500);
+}
+
+.holdings-state.error {
+  color: var(--negative);
+  font-weight: 600;
+}
+
+.holdings-list {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.holdings-list th {
+  height: 26px;
+  padding: 0 10px 4px;
+  border-bottom: 1px solid var(--line);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--ink-500);
+  white-space: nowrap;
+}
+
+.holdings-list td {
+  height: 30px;
+  padding: 0 10px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-900);
+  white-space: nowrap;
+}
+
+.holdings-list tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.holdings-list tbody tr:hover td {
+  background: var(--surface-hover, var(--surface-sunken));
+}
+
+.holdings-list th:first-child,
+.holdings-list td:first-child {
+  padding-left: 2px;
+}
+
+.holdings-list th:last-child,
+.holdings-list td:last-child {
+  padding-right: 2px;
+}
+
+.holdings-list .num {
+  text-align: right;
+}
+
+/* Symbol with its colour dot */
+.holding {
+  max-width: 160px;
+}
+
+.holding .dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 8px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+.holding .symbol {
+  display: inline-block;
+  max-width: calc(100% - 16px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  font-weight: 600;
+}
+
+/* Share: a thin bar plus the percentage */
+.share-head,
+.share {
+  width: 42%;
+}
+
+.share {
+  white-space: nowrap;
+}
+
+.share-track {
+  display: inline-block;
+  width: calc(100% - 54px);
+  height: 6px;
+  border-radius: var(--r-pill);
+  background: var(--surface-sunken);
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.share-fill {
+  display: block;
+  height: 100%;
+  min-width: 3px;
+  border-radius: var(--r-pill);
+}
+
+.share-pct {
+  display: inline-block;
+  width: 48px;
+  margin-left: 6px;
+  text-align: right;
+  color: var(--ink-500);
+  vertical-align: middle;
+}

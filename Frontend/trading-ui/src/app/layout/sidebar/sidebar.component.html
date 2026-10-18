@@ -1,0 +1,60 @@
+<!-- Professional Sidebar Component -->
+<aside class="sidebar" [class.collapsed]="isCollapsed">
+  <!-- Navigation Menu: every group, the first included, gets the same label so spacing matches -->
+  <nav class="sidebar-nav">
+    <ng-container *ngFor="let section of navSections">
+    <p class="nav-section" [attr.aria-hidden]="isCollapsed">{{ section.title }}</p>
+    <ul class="nav-menu" [attr.aria-label]="section.title">
+      <li *ngFor="let item of section.items" class="nav-item">
+        <a 
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ paths: 'exact', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored' }"
+          class="nav-link"
+          [attr.title]="isCollapsed ? item.label : null"
+          [attr.aria-label]="isCollapsed ? item.label : null"
+          (click)="closeSidebar()"
+        >
+          <span class="nav-icon">
+            <i [class]="item.icon"></i>
+          </span>
+          <div class="nav-content">
+            <span class="nav-label">{{ item.label }}</span>
+            <span class="nav-description" *ngIf="!isCollapsed">{{ item.description }}</span>
+          </div>
+          <span *ngIf="item.badge && !isCollapsed" [class]="'badge ' + (item.badgeClass || '')">
+            {{ item.badge }}
+          </span>
+          <span *ngIf="item.badge && isCollapsed" class="badge-dot" [class]="'badge-dot-' + (item.badgeClass || '')"></span>
+        </a>
+      </li>
+    </ul>
+    </ng-container>
+  </nav>
+
+  <!-- Sidebar Footer: version and the collapse toggle -->
+  <div class="sidebar-footer">
+    <div class="footer-content footer-with-toggle">
+      <span class="footer-text" *ngIf="!isCollapsed">v1.0</span>
+      <button
+        class="toggle-button"
+        (click)="toggleSidebar()"
+        [attr.aria-label]="isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+        [attr.aria-expanded]="!isCollapsed"
+        [title]="isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+      >
+        <i class="fas" [class.fa-angles-left]="!isCollapsed" [class.fa-angles-right]="isCollapsed"></i>
+      </button>
+    </div>
+  </div>
+</aside>
+
+<button
+  *ngIf="isCollapsed"
+  class="sidebar-reopen-button"
+  (click)="toggleSidebar()"
+  aria-label="Reopen sidebar"
+  title="Reopen sidebar"
+>
+  <i class="fas fa-chevron-right"></i>
+</button>

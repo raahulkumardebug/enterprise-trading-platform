@@ -1,0 +1,47 @@
+/* Inline error banner — buttons come from the global design system */
+.error-container {
+  width: 100%;
+  margin-bottom: 16px;
+  padding: 16px 18px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--negative-line);
+  background: var(--negative-soft);
+  color: var(--negative-ink);
+}
+
+.error-container.network-error {
+  border-color: var(--warning-line);
+  background: var(--warning-soft);
+  color: var(--warning);
+}
+
+.error-message {
+  margin: 0 0 6px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.error-hint {
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+.error-hint code {
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: color-mix(in srgb, currentColor 10%, transparent);
+  font-size: 12px;
+}
+
+.error-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.btn {
+  height: var(--control-h-sm);
+  padding: 0 14px;
+  font-size: 13px;
+  border-radius: 10px;
+}

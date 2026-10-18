@@ -1,0 +1,203 @@
+<div class="page transaction-actions-container">
+  <header class="page-header">
+    <div class="page-heading">
+      <h1 class="page-title">Deposit &amp; withdraw</h1>
+      <p class="page-subtitle">Move cash in and out of your trading account</p>
+    </div>
+    <div class="page-actions">
+      <a routerLink="/transaction-history" class="btn btn-secondary"><i class="fas fa-clock-rotate-left"></i> View history</a>
+    </div>
+  </header>
+
+  <div class="ticket-message-stack" *ngIf="error()">
+    @if (error()) {
+      <section class="ticket-message ticket-message-error" role="alert" data-testid="transaction-rejected-message">
+        <div class="message-header-row">
+          <p class="message-title">Transaction rejected</p>
+          <span class="message-code">{{ error()?.errorCode }}</span>
+        </div>
+        <p class="message-body">{{ error()?.message }}</p>
+        <dl class="message-meta-grid">
+          <div>
+            <dt>Action</dt>
+            <dd>{{ getLastAttemptedActionLabel() }}</dd>
+          </div>
+          <div>
+            <dt>Amount</dt>
+            <dd>{{ getLastAttemptedAmountLabel() }}</dd>
+          </div>
+          <div>
+            <dt>Account</dt>
+            <dd>{{ accountNumber() ?? accountId() ?? 'N/A' }}</dd>
+          </div>
+        </dl>
+        <div class="message-actions">
+          <button type="button" class="message-action ghost" (click)="dismissError()">Dismiss</button>
+        </div>
+      </section>
+    }
+  </div>
+
+  <div class="funds-layout">
+    <!-- Entry form -->
+    <section class="panel action-card" [class.is-withdraw]="transactionType() === 'withdraw'">
+      <header class="panel-header">
+        <div>
+          <h2 class="panel-title">{{ getTransactionTitle() }}</h2>
+          <p class="panel-subtitle">{{ getTransactionDescription() }}</p>
+        </div>
+      </header>
+
+      <div class="panel-body form-stack">
+        <!-- Direction: two large choice cards -->
+        <div class="type-choice" role="radiogroup" aria-label="Transaction type">
+          <button
+            type="button"
+            role="radio"
+            class="segment credit choice"
+            data-testid="type-deposit"
+            [class.active]="transactionType() === 'deposit'"
+            [attr.aria-checked]="transactionType() === 'deposit'"
+            [disabled]="loading()"
+            (click)="onTransactionTypeChange('deposit')"
+          >
+            <span class="choice-icon"><i class="fas fa-arrow-down"></i></span>
+            <span class="choice-text">
+              <span class="choice-title">Deposit</span>
+              <span class="choice-sub">Add cash to trade with</span>
+            </span>
+          </button>
+          <button
+            type="button"
+            role="radio"
+            class="segment debit choice"
+            data-testid="type-withdraw"
+            [class.active]="transactionType() === 'withdraw'"
+            [attr.aria-checked]="transactionType() === 'withdraw'"
+            [disabled]="loading()"
+            (click)="onTransactionTypeChange('withdraw')"
+          >
+            <span class="choice-icon"><i class="fas fa-arrow-up"></i></span>
+            <span class="choice-text">
+              <span class="choice-title">Withdraw</span>
+              <span class="choice-sub">Move cash out</span>
+            </span>
+          </button>
+        </div>
+
+        <div class="form-group">
+          <label for="transaction-amount">Amount</label>
+          <div class="amount-field" [class.is-invalid]="exceedsBalance()">
+            <span class="amount-prefix">{{ currency() }}</span>
+            <input
+              id="transaction-amount"
+              type="number"
+              inputmode="decimal"
+              [ngModel]="amount()"
+              (ngModelChange)="amount.set($event)"
+              placeholder="0.00"
+              min="0.01"
+              step="0.01"
+              class="form-input amount-input"
+              [disabled]="loading()"
+            />
+          </div>
+
+          <div class="quick-amounts" aria-label="Quick amounts">
+            @for (value of quickAmounts; track value) {
+              <button type="button" class="chip" (click)="addQuickAmount(value)" [disabled]="loading()">+{{ value | number }}</button>
+            }
+            @if (transactionType() === 'withdraw' && balance() !== null) {
+              <button type="button" class="chip chip-max" data-testid="use-full-balance" (click)="useFullBalance()" [disabled]="loading()">Max</button>
+            }
+          </div>
+
+          @if (exceedsBalance()) {
+            <p class="field-warning" data-testid="exceeds-balance" role="status">
+              <i class="fas fa-triangle-exclamation"></i>
+              This is more than your available cash of {{ balance() | number:'1.2-2' }} {{ currency() }}.
+            </p>
+          } @else {
+            <p class="field-hint">Minimum 0.01 {{ currency() }}.</p>
+          }
+        </div>
+
+        <!-- Live summary -->
+        <section class="funds-summary" aria-label="Transaction summary" data-testid="transaction-summary">
+          <div class="summary-row">
+            <span class="summary-label">{{ getActionLabel() }}</span>
+            <span class="summary-value">
+              {{ transactionType() === 'deposit' ? '+' : '−' }}{{ amount() && amount()! > 0 ? (amount() | number:'1.2-2') : '0.00' }}
+              <small>{{ currency() }}</small>
+            </span>
+          </div>
+          @if (balanceAfter() !== null) {
+            <div class="summary-row summary-after">
+              <span class="summary-label">Balance after</span>
+              <span class="summary-value" [class.negative]="balanceAfter()! < 0" data-testid="balance-after">
+                {{ balanceAfter() | number:'1.2-2' }} <small>{{ currency() }}</small>
+              </span>
+            </div>
+          }
+        </section>
+
+        <button
+          class="btn btn-primary btn-lg submit-button"
+          data-testid="submit-transaction-btn"
+          (click)="onSubmit()"
+          [disabled]="!amount() || amount()! <= 0 || loading()"
+        >
+          @if (loading()) {
+            <i class="fas fa-spinner fa-spin"></i> Processing...
+          } @else {
+            <i class="fas" [class.fa-arrow-down]="transactionType() === 'deposit'" [class.fa-arrow-up]="transactionType() === 'withdraw'"></i>
+            {{ getActionLabel() }} funds
+          }
+        </button>
+      </div>
+    </section>
+
+    <!-- Side rail: balance + recent activity -->
+    <aside class="funds-rail">
+      <section class="balance-card" aria-label="Cash balance" data-testid="balance-card">
+        <div class="balance-eyebrow">Available cash</div>
+        <div class="balance-value" data-testid="balance-value">
+          @if (balance() !== null) {
+            {{ balance() | number:'1.2-2' }} <span class="balance-ccy">{{ currency() }}</span>
+          } @else {
+            <span class="balance-missing">—</span>
+          }
+        </div>
+        <div class="balance-account">
+          <i class="fas fa-building-columns"></i>
+          Account {{ accountNumber() ?? accountId() ?? 'N/A' }}
+        </div>
+      </section>
+
+      <section class="panel recent-card" aria-label="Recent activity">
+        <header class="panel-header">
+          <h2 class="panel-title">Recent activity</h2>
+          <a routerLink="/transaction-history" class="panel-link">See all <i class="fas fa-arrow-right"></i></a>
+        </header>
+        <ul class="recent-list">
+          @for (t of recentTransactions(); track t.transactionId) {
+            <li class="recent-item" data-testid="recent-transaction">
+              <span class="recent-icon" [class.credit]="t.actionType === 'CREDIT'" [class.debit]="t.actionType === 'DEBIT'">
+                <i class="fas" [ngClass]="transactionIcon(t.transactionType)"></i>
+              </span>
+              <span class="recent-text">
+                <span class="recent-type">{{ t.transactionType | titlecase }}</span>
+                <span class="recent-date">{{ shortDate(t.createdOn) }}</span>
+              </span>
+              <span class="recent-amount" [class.credit]="t.actionType === 'CREDIT'">
+                {{ t.actionType === 'CREDIT' ? '+' : '−' }}{{ t.amount | number:'1.2-2' }} <small>{{ currency() }}</small>
+              </span>
+            </li>
+          } @empty {
+            <li class="recent-empty">No transactions yet. Your first deposit will show up here.</li>
+          }
+        </ul>
+      </section>
+    </aside>
+  </div>
+</div>

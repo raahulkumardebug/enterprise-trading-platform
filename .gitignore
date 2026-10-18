@@ -1,0 +1,64 @@
+# Byte-compiled / Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Packaging & Build Artifacts
+*.egg-info/
+.eggs/
+dist/
+build/
+sprint-04-analytics-etl/src/*.egg-info/
+
+# Maven / Java Build Artifacts (sprint-05-domain-engine)
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual Environments
+venv/
+env/
+.venv/
+leap_capstone_psql/
+
+# Environment & Credentials (contain secrets)
+.env
+manifest.env
+!.env.example
+!.example.env
+
+# IDE & OS Files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Node.js & npm (sprint-09-trading-ui and others)
+node_modules/
+npm-debug.log
+.npmrc
+
+sprint-04-analytics-etl/.cache/
+
+# Ignore all DuckDB database files
+*.duckdb
+
+context/
+# order-service market data cache snapshot (MARKET_DATA_CACHE_FILE)
+Services/order-service/data/
+
+# Generated test output (Playwright reports, results, coverage, ETL staging)
+playwright-report/
+test-results/
+coverage/
+.staging/
+kubectl delete service frontend
+kubectl apply -k k8s/overlays/four-lb
+kubectl get svc <name>          # wait for the new hostname

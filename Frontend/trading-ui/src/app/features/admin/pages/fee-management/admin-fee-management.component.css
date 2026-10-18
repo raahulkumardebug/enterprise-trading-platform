@@ -1,0 +1,94 @@
+/* Admin fee management — page, panel and table styles come from the global design system */
+
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.fee-table {
+  min-width: 680px;
+}
+
+/* Three evenly spaced data columns, plus a fixed actions column */
+.fee-table col.col-asset,
+.fee-table col.col-flat-fee,
+.fee-table col.col-percentage-fee {
+  width: calc((100% - 200px) / 3);
+}
+
+.fee-table col.col-actions {
+  width: 200px;
+}
+
+.fee-table th.actions,
+.fee-table td.actions {
+  text-align: right;
+}
+
+.fee-table tr.editing td {
+  background: var(--brand-soft);
+  /* Keep the asset name, inputs and buttons on one line; don't clip the input focus ring */
+  vertical-align: middle;
+  overflow: visible;
+}
+
+.row-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Number input with a $ or % affix, centred in its column */
+.fee-input {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.fee-input .form-input {
+  /* Same height as the Save / Cancel buttons so the row lines up */
+  height: var(--control-h-sm);
+  width: 120px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.fee-input-affix {
+  font-weight: 600;
+  color: var(--ink-500);
+}
+
+.fee-table .field-error {
+  text-align: center;
+  margin-top: 4px;
+  white-space: normal;
+}
+
+/* Centre the fee columns so the three columns read as evenly spaced
+   (fees share one format, so their digits still line up) */
+.fee-table th.num,
+.fee-table td.num {
+  text-align: center;
+}
+
+.asset-type {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+}
+
+.asset-icon {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: var(--brand-soft);
+  color: var(--brand);
+  font-size: 13px;
+}

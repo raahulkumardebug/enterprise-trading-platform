@@ -1,0 +1,160 @@
+/* Admin user registration — page, panel, form and alert styles come from the global design system */
+
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.registration-flash-stack {
+  display: grid;
+  gap: 10px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.error {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--negative);
+}
+
+/* Password reveal */
+.password-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input .form-input {
+  padding-right: 48px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 6px;
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ink-500);
+  cursor: pointer;
+}
+
+.toggle-password:hover {
+  background: var(--surface-sunken);
+  color: var(--ink-900);
+}
+
+/* Fixed role (customers only) */
+.role-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-md);
+  background: var(--surface-muted);
+}
+
+.role-card .pill {
+  margin-left: auto;
+}
+
+.role-icon {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: var(--brand-soft);
+  color: var(--brand);
+  font-size: 13px;
+}
+
+.checkbox-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.checkbox-text strong {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-900);
+}
+
+.checkbox-text small {
+  font-size: 12.5px;
+  font-weight: 400;
+  color: var(--ink-500);
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+.form-actions .btn-primary {
+  min-width: 180px;
+}
+
+/* Guidance rail */
+.guidance-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  list-style: none;
+  margin: 0;
+}
+
+.guidance-list li {
+  display: flex;
+  gap: 14px;
+}
+
+.guidance-icon {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: var(--brand-soft);
+  color: var(--brand);
+  font-size: 13px;
+}
+
+.guidance-list strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-900);
+}
+
+.guidance-list p {
+  margin: 2px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-500);
+}
+
+@media (max-width: 640px) {
+  .form-actions {
+    flex-direction: column;
+  }
+}

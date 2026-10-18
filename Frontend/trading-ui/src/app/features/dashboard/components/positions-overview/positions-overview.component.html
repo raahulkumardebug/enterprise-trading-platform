@@ -1,0 +1,37 @@
+<!-- Holdings overview: one row per holding with its share of the portfolio -->
+@if (loading() && positions().length === 0) {
+  <p class="holdings-state">Loading holdings…</p>
+} @else if (error()) {
+  <p class="holdings-state error">{{ error() }}</p>
+} @else if (rows().length === 0) {
+  <p class="holdings-state" data-testid="holdings-empty">No open positions yet.</p>
+} @else {
+  <table class="holdings-list mini-table" aria-label="Largest holdings">
+    <thead>
+      <tr>
+        <th scope="col">Holding</th>
+        <th scope="col" class="share-head">Share of units</th>
+        <th scope="col" class="num">Quantity</th>
+        <th scope="col" class="num">Avg cost</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (row of rows(); track row.symbol) {
+        <tr [attr.data-testid]="'holding-' + row.symbol">
+          <td class="holding">
+            <span class="dot" [style.background]="row.color"></span>
+            <span class="symbol" [title]="row.symbol">{{ row.symbol }}</span>
+          </td>
+          <td class="share" [title]="row.symbol + ' — ' + (row.percentage | number: '1.0-1') + '% of units'">
+            <span class="share-track">
+              <span class="share-fill" [style.width.%]="row.percentage" [style.background]="row.color"></span>
+            </span>
+            <span class="share-pct">{{ row.percentage | number: '1.1-1' }}%</span>
+          </td>
+          <td class="num">{{ row.quantity | number }}</td>
+          <td class="num">{{ formatPrice(row.averageCost, row.symbol) }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}
